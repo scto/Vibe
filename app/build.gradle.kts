@@ -22,7 +22,7 @@ android {
             useSupportLibrary = true
         }
     }
-    
+    /*
     signingConfigs {
         create("release") {
             val propertiesFilePath = "release-signing.properties"
@@ -55,7 +55,7 @@ android {
             }
         }
     }
-
+    */
     buildTypes {
         debug {
             isMinifyEnabled = true
