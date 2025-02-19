@@ -24,67 +24,54 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.rk.vibe.MainActivity
-import com.rk.vibe.data.MainViewModel
 import com.rk.vibe.data.Song
 
 @Composable
 fun Home(modifier: Modifier = Modifier, mainActivity: MainActivity) {
-  val songs by mainActivity.viewModel.songs.collectAsState()
-  
-  Column(
-    modifier = modifier.fillMaxSize(),
-    verticalArrangement = Arrangement.Top,
-    horizontalAlignment = Alignment.CenterHorizontally
-  ) {
-    LazyColumn {
-      items(items = songs, key = { song ->
-        song.id
-      }) { song ->
-        SongItem(song,mainActivity)
-      }
+    val songs by mainActivity.viewModel.songs.collectAsState()
+
+    Column(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        LazyColumn {
+            items(items = songs, key = { song -> song.id }) { song -> SongItem(song, mainActivity) }
+        }
     }
-    
-  }
 }
 
 @Composable
-fun SongItem(song: Song,mainActivity: MainActivity) {
-  Card(
-    modifier = Modifier
-      .fillMaxWidth()
-      .padding(8.dp),
-    onClick = {
-      if (mainActivity.isPlaying()){
-        mainActivity.stopMusic()
-      }
-      mainActivity.playMusic(Uri.parse(song.path))
-      
-    }
-  ) {
-    Row(
-      modifier = Modifier.padding(8.dp)
+fun SongItem(song: Song, mainActivity: MainActivity) {
+    Card(
+        modifier = Modifier.fillMaxWidth().padding(8.dp),
+        onClick = {
+            if (mainActivity.isPlaying()) {
+                mainActivity.stopMusic()
+            }
+            mainActivity.playMusic(Uri.parse(song.path))
+        },
     ) {
-      AsyncImage(
-        model = song.artwork,
-        contentDescription = "Album Art",
-        modifier = Modifier
-          .size(64.dp)
-          .padding(4.dp),
-        contentScale = ContentScale.Crop
-      )
-      
-      Spacer(modifier = Modifier.width(8.dp))
-      
-      Column(
-        verticalArrangement = Arrangement.Center
-      ) {
-        Text(
-          text = song.name ?: "Unknown Title", style = MaterialTheme.typography.titleMedium
-        )
-        Text(
-          text = song.author ?: "Unknown Artist", style = MaterialTheme.typography.bodySmall
-        )
-      }
+        Row(modifier = Modifier.padding(8.dp)) {
+            AsyncImage(
+                model = song.artwork,
+                contentDescription = "Album Art",
+                modifier = Modifier.size(64.dp).padding(4.dp),
+                contentScale = ContentScale.Crop,
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Column(verticalArrangement = Arrangement.Center) {
+                Text(
+                    text = song.name ?: "Unknown Title",
+                    style = MaterialTheme.typography.titleMedium,
+                )
+                Text(
+                    text = song.author ?: "Unknown Artist",
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
+        }
     }
-  }
 }
